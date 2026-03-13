@@ -2,11 +2,10 @@
 app.py
 ------
 Aplicación de Generación de Imágenes y Edición de Contenido con IA Generativa
-Trabajo Final – Máster IA – Asignatura: IA Generativa
 
 Funcionalidades:
   - Generación de imágenes con Stable Diffusion XL (Hugging Face)
-  - Edición de texto con Claude Haiku (Anthropic API)
+  - Edición de texto con Llama 3.3 70B (Groq API)
   - Galería de imágenes con descarga
   - Historial de versiones de texto
   - Sistema de roles y colaboración
@@ -16,8 +15,8 @@ Para ejecutar:
   pip install -r requirements.txt
   streamlit run app.py
 
-Variables de entorno opcionales (para conectar con AWS real):
-  AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION
+Variables de entorno necesarias:
+  GROQ_API_KEY, HF_API_KEY
 """
 
 import streamlit as st
@@ -175,7 +174,7 @@ with st.sidebar:
     else:
         st.markdown('<span class="status-badge badge-demo">🟡 Modo Demo (sin AWS)</span>',
                     unsafe_allow_html=True)
-        st.caption("Configura ANTHROPIC_API_KEY y HF_API_KEY en los Secrets de Streamlit Cloud.")
+        st.caption("Configura GROQ_API_KEY y HF_API_KEY en los Secrets de Streamlit Cloud.")
 
     st.markdown("---")
 
@@ -388,8 +387,8 @@ with tab1:
 # ═══════════════════════════════════════════════════════════════════════════════
 
 with tab2:
-    st.subheader("Edición de Contenido con Claude 3 Sonnet")
-    st.caption("Modelo: Claude Haiku · Anthropic API")
+    st.subheader("Edición de Contenido con Llama 3.3 70B")
+    st.caption("Modelo: Llama 3.3 70B Versatile · Groq API")
 
     can_edit = st.session_state.current_user["role"] in ["Redactor", "Admin"]
     if not can_edit:
@@ -453,7 +452,7 @@ with tab2:
             # Guardamos versión antes de modificar
             save_text_version(user_text, "Antes de IA")
 
-            with st.spinner(f"Claude 3 procesando: {operation}..."):
+            with st.spinner(f"Groq procesando: {operation}..."):
                 if st.session_state.bedrock_available:
                     result = bc.edit_text_with_claude(user_text, operation)
                 else:
@@ -740,6 +739,6 @@ with tab4:
 st.markdown("---")
 st.caption(
     "CreativeAI Studio · Trabajo Final – Máster en IA – IA Generativa · "
-    "Construido con Anthropic API + Hugging Face · "
+    "Construido con Groq API (Llama 3.3 70B) + Hugging Face (SDXL) · "
     f"{'🟢 APIs activas' if st.session_state.bedrock_available else '🟡 Modo demo'}"
 )
