@@ -1,8 +1,8 @@
 """
 demo_data.py
 ------------
-Datos y respuestas de ejemplo para el modo demo (sin credenciales AWS).
-Simula las respuestas de Bedrock de forma realista para poder presentar la app.
+Datos y respuestas de ejemplo para el modo demo (sin claves de API).
+Simula las respuestas de Groq y Hugging Face para poder presentar la app.
 """
 
 import io
@@ -65,9 +65,9 @@ def generate_demo_image(prompt: str, style: str, width: int = 512, height: int =
 
     # Prompt truncado
     prompt_short = prompt[:55] + "..." if len(prompt) > 55 else prompt
-    draw.text((30, height - 95), "MODO DEMO – Bedrock SDXL", fill=(255, 200, 100))
+    draw.text((30, height - 95), "MODO DEMO – Stable Diffusion XL", fill=(255, 200, 100))
     draw.text((30, height - 72), prompt_short, fill=(220, 220, 220))
-    draw.text((30, height - 40), "Conecta AWS para generar imágenes reales", fill=(180, 180, 180))
+    draw.text((30, height - 40), "Configura HF_API_KEY para generar imágenes reales", fill=(180, 180, 180))
 
     return img
 
@@ -75,13 +75,13 @@ def generate_demo_image(prompt: str, style: str, width: int = 512, height: int =
 # ─── Respuestas de texto de demostración ───────────────────────────────────────
 
 DEMO_RESPONSES = {
-    "Resumir": lambda t: f"[DEMO – Claude 3] Resumen del texto ({len(t.split())} palabras originales):\n\n{' '.join(t.split()[:30])}{'...' if len(t.split()) > 30 else ''}\n\n→ En modo real, Claude 3 Sonnet analizaría el texto completo y generaría un resumen coherente.",
-    "Expandir": lambda t: f"[DEMO – Claude 3] Versión expandida:\n\n{t}\n\nAdemás, es importante considerar el contexto más amplio de esta idea. Los expertos en el campo han señalado que este tipo de enfoques tiene implicaciones significativas en múltiples áreas. Por ejemplo, desde una perspectiva práctica...\n\n→ En modo real, Claude generaría una expansión coherente y contextualizada.",
-    "Corregir gramática": lambda t: f"[DEMO – Claude 3] Texto corregido:\n\n{t}\n\n→ En modo real, Claude detectaría y corregiría errores gramaticales, ortográficos y de puntuación.",
-    "Mejorar estilo": lambda t: f"[DEMO – Claude 3] Texto con estilo mejorado:\n\n{t}\n\n→ En modo real, Claude reformularía el texto para hacerlo más claro, fluido y profesional.",
-    "Generar variación": lambda t: f"[DEMO – Claude 3] Variación creativa:\n\n{t.replace('es', 'son').replace('un', 'algún')}\n\n→ En modo real, Claude generaría una variación manteniendo el significado pero con redacción diferente.",
-    "Traducir al inglés": lambda t: f"[DEMO – Claude 3] Translation to English:\n\n[This would be an accurate English translation of the Spanish text]\n\nOriginal: {t[:100]}...\n\n→ En modo real, Claude traduciría el texto completo al inglés.",
-    "Traducir al español": lambda t: f"[DEMO – Claude 3] Traducción al español:\n\n[Esta sería una traducción precisa al español]\n\nOriginal: {t[:100]}...\n\n→ En modo real, Claude traduciría el texto completo al español.",
+    "Resumir": lambda t: f"[DEMO – Llama 3.3] Resumen del texto ({len(t.split())} palabras originales):\n\n{' '.join(t.split()[:30])}{'...' if len(t.split()) > 30 else ''}\n\n→ En modo real, Llama 3.3 70B analizaría el texto completo y generaría un resumen coherente.",
+    "Expandir": lambda t: f"[DEMO – Llama 3.3] Versión expandida:\n\n{t}\n\nAdemás, es importante considerar el contexto más amplio de esta idea. Los expertos en el campo han señalado que este tipo de enfoques tiene implicaciones significativas en múltiples áreas. Por ejemplo, desde una perspectiva práctica...\n\n→ En modo real, Llama 3.3 generaría una expansión coherente y contextualizada.",
+    "Corregir gramática": lambda t: f"[DEMO – Llama 3.3] Texto corregido:\n\n{t}\n\n→ En modo real, Llama 3.3 detectaría y corregiría errores gramaticales, ortográficos y de puntuación.",
+    "Mejorar estilo": lambda t: f"[DEMO – Llama 3.3] Texto con estilo mejorado:\n\n{t}\n\n→ En modo real, Llama 3.3 reformularía el texto para hacerlo más claro, fluido y profesional.",
+    "Generar variación": lambda t: f"[DEMO – Llama 3.3] Variación creativa:\n\n{t.replace('es', 'son').replace('un', 'algún')}\n\n→ En modo real, Llama 3.3 generaría una variación manteniendo el significado pero con redacción diferente.",
+    "Traducir al inglés": lambda t: f"[DEMO – Llama 3.3] Translation to English:\n\n[This would be an accurate English translation of the Spanish text]\n\nOriginal: {t[:100]}...\n\n→ En modo real, Llama 3.3 traduciría el texto completo al inglés.",
+    "Traducir al español": lambda t: f"[DEMO – Llama 3.3] Traducción al español:\n\n[Esta sería una traducción precisa al español]\n\nOriginal: {t[:100]}...\n\n→ En modo real, Llama 3.3 traduciría el texto completo al español.",
 }
 
 
