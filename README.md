@@ -1,7 +1,7 @@
 # 🎨 CreativeAI Studio
 
 Aplicación web de IA generativa para generación de imágenes y edición de contenido.
-Trabajo Final – Máster en IA – Asignatura: IA Generativa.
+Trabajo Unidad3 – Máster en IA – Asignatura: IA Generativa.
 
 ## Tecnologías utilizadas
 
@@ -10,7 +10,7 @@ Trabajo Final – Máster en IA – Asignatura: IA Generativa.
 | Generación de imágenes | Hugging Face Inference API | Stable Diffusion XL (stabilityai/sdxl-base-1.0) |
 | Edición de texto | Groq API | Llama 3.3 70B Versatile |
 
-> 💡 Para los prompts de imágenes usa **inglés** — SD XL está entrenado principalmente en inglés y da mejores resultados. Para edición de texto puedes usar **español** sin problema.
+> 💡 Para los prompts de imágenes usar **inglés** — SD XL está entrenado principalmente en inglés y da mejores resultados. Para edición de texto se puede usar **español** sin problema.
 
 ## Estructura del proyecto
 
@@ -44,7 +44,7 @@ streamlit run app.py
 GROQ_API_KEY = "gsk_..."
 HF_API_KEY = "hf_..."
 ```
-4. Deploy → link público en 2-3 minutos
+4. Deploy → link público: https://creativeai-studio-ir3rrtclyr77wmgxcchfnc.streamlit.app/
 
 ## Claves necesarias
 
