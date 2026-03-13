@@ -55,8 +55,8 @@ DEFAULT_NEGATIVE_PROMPT = (
     "watermark, text, logo, poorly drawn, nsfw"
 )
 
-HF_IMAGE_MODEL = "runwayml/stable-diffusion-v1-5"
-HF_API_URL = f"https://router.huggingface.co/hf-inference/models/{HF_IMAGE_MODEL}"
+HF_IMAGE_MODEL = "stabilityai/stable-diffusion-xl-base-1.0"
+HF_API_URL = f"https://api-inference.huggingface.co/models/{HF_IMAGE_MODEL}"
 
 
 # ─── Detección de modo ────────────────────────────────────────────────────────

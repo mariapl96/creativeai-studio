@@ -119,7 +119,7 @@ def init_session():
         "current_user":     demo.DEMO_USERS[0],
         "active_project":   demo.DEMO_PROJECTS[0]["name"],
         "moderation_log":   [],
-        "bedrock_available": bc.get_bedrock_client() is not None,  # True si hay API keys
+        "bedrock_available": bc.get_bedrock_client() is not None,
     }
     for key, val in defaults.items():
         if key not in st.session_state:
@@ -465,7 +465,7 @@ with tab2:
                 st.markdown("**Resultado:**")
                 st.text_area("", value=result, height=180, key="result_text")
             else:
-                st.error("Error al procesar con Claude. Revisa que ANTHROPIC_API_KEY esté configurada.")
+                st.error("Error al procesar el texto. Revisa que GROQ_API_KEY esté configurada en los Secrets.")
 
         st.markdown("---")
 
