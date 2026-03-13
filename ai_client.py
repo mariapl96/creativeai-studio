@@ -1,5 +1,5 @@
 """
-bedrock_client.py
+ai_client.py
 -----------------
 Módulo de integración con APIs de IA generativa.
 

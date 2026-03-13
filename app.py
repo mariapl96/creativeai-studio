@@ -1,12 +1,12 @@
 """
 app.py
 ------
-Aplicación de Generación de Imágenes y Edición de Contenido con Amazon Bedrock
+Aplicación de Generación de Imágenes y Edición de Contenido con IA Generativa
 Trabajo Final – Máster IA – Asignatura: IA Generativa
 
 Funcionalidades:
-  - Generación de imágenes con Stable Diffusion XL (Bedrock)
-  - Edición de texto con Claude 3 Sonnet (Bedrock)
+  - Generación de imágenes con Stable Diffusion XL (Hugging Face)
+  - Edición de texto con Claude Haiku (Anthropic API)
   - Galería de imágenes con descarga
   - Historial de versiones de texto
   - Sistema de roles y colaboración
@@ -29,7 +29,7 @@ from datetime import datetime
 from PIL import Image
 
 # Módulos propios
-import bedrock_client as bc
+import ai_client as bc
 import demo_data as demo
 
 
@@ -119,7 +119,7 @@ def init_session():
         "current_user":     demo.DEMO_USERS[0],
         "active_project":   demo.DEMO_PROJECTS[0]["name"],
         "moderation_log":   [],
-        "bedrock_available": bc.get_bedrock_client() is not None,
+        "bedrock_available": bc.get_bedrock_client() is not None,  # True si hay API keys
     }
     for key, val in defaults.items():
         if key not in st.session_state:
@@ -170,12 +170,12 @@ with st.sidebar:
 
     # Estado de conexión
     if st.session_state.bedrock_available:
-        st.markdown('<span class="status-badge badge-live">🟢 Bedrock conectado</span>',
+        st.markdown('<span class="status-badge badge-live">🟢 APIs conectadas</span>',
                     unsafe_allow_html=True)
     else:
         st.markdown('<span class="status-badge badge-demo">🟡 Modo Demo (sin AWS)</span>',
                     unsafe_allow_html=True)
-        st.caption("Configura AWS_ACCESS_KEY_ID y AWS_SECRET_ACCESS_KEY para usar Bedrock real.")
+        st.caption("Configura ANTHROPIC_API_KEY y HF_API_KEY en los Secrets de Streamlit Cloud.")
 
     st.markdown("---")
 
@@ -216,7 +216,7 @@ with st.sidebar:
 st.markdown(f"""
 <div class="main-header">
     <h1>🎨 CreativeAI Studio</h1>
-    <p>Plataforma de generación de imágenes y edición de contenido con Amazon Bedrock
+    <p>Plataforma de generación de imágenes y edición de contenido con IA generativa
      &nbsp;|&nbsp; Proyecto: <strong>{st.session_state.active_project}</strong></p>
 </div>
 """, unsafe_allow_html=True)
@@ -238,7 +238,7 @@ tab1, tab2, tab3, tab4 = st.tabs([
 
 with tab1:
     st.subheader("Generación de Imágenes con Stable Diffusion XL")
-    st.caption("Modelo: `stability.stable-diffusion-xl-v1` · Amazon Bedrock")
+    st.caption("Modelo: Stable Diffusion XL · Hugging Face Inference API")
 
     col_form, col_preview = st.columns([1, 1], gap="large")
 
@@ -319,7 +319,7 @@ with tab1:
                     st.success("✅ Imagen generada correctamente")
                     st.rerun()
                 else:
-                    st.error("No se pudo generar la imagen. Revisa la conexión con Bedrock.")
+                    st.error("No se pudo generar la imagen. Revisa que HF_API_KEY esté configurada.")
 
     with col_preview:
         st.markdown("#### 🖼️ Vista previa")
@@ -389,7 +389,7 @@ with tab1:
 
 with tab2:
     st.subheader("Edición de Contenido con Claude 3 Sonnet")
-    st.caption("Modelo: `anthropic.claude-3-sonnet-20240229-v1:0` · Amazon Bedrock")
+    st.caption("Modelo: Claude Haiku · Anthropic API")
 
     can_edit = st.session_state.current_user["role"] in ["Redactor", "Admin"]
     if not can_edit:
@@ -465,7 +465,7 @@ with tab2:
                 st.markdown("**Resultado:**")
                 st.text_area("", value=result, height=180, key="result_text")
             else:
-                st.error("Error al procesar con Claude. Revisa la conexión con Bedrock.")
+                st.error("Error al procesar con Claude. Revisa que ANTHROPIC_API_KEY esté configurada.")
 
         st.markdown("---")
 
@@ -740,6 +740,6 @@ with tab4:
 st.markdown("---")
 st.caption(
     "CreativeAI Studio · Trabajo Final – Máster en IA – IA Generativa · "
-    "Construido con Amazon Bedrock (SDXL + Claude 3) · "
-    f"{'🟢 Bedrock activo' if st.session_state.bedrock_available else '🟡 Modo demo'}"
+    "Construido con Anthropic API + Hugging Face · "
+    f"{'🟢 APIs activas' if st.session_state.bedrock_available else '🟡 Modo demo'}"
 )
