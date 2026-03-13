@@ -301,7 +301,7 @@ with tab1:
                     else:
                         img = demo.generate_demo_image(prompt, style, width, height)
 
-                if img is not None:
+                if img is not None and not (isinstance(img, str) and img.startswith("ERROR_")):
                     img_bytes = image_to_bytes(img)
                     entry = {
                         "id":        len(st.session_state.gallery) + 1,
@@ -319,7 +319,7 @@ with tab1:
                     st.success("✅ Imagen generada correctamente")
                     st.rerun()
                 else:
-                    st.error("No se pudo generar la imagen. Revisa que HF_API_KEY esté configurada.")
+                    st.error(f"No se pudo generar la imagen: {img}")
 
     with col_preview:
         st.markdown("#### 🖼️ Vista previa")

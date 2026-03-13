@@ -55,7 +55,7 @@ DEFAULT_NEGATIVE_PROMPT = (
     "watermark, text, logo, poorly drawn, nsfw"
 )
 
-HF_IMAGE_MODEL = "stabilityai/stable-diffusion-xl-base-1.0"
+HF_IMAGE_MODEL = "stabilityai/stable-diffusion-2-1"
 HF_API_URL = f"https://api-inference.huggingface.co/models/{HF_IMAGE_MODEL}"
 
 
@@ -104,11 +104,9 @@ def generate_image(prompt: str, style: str, width: int = 512, height: int = 512,
             response = requests.post(HF_API_URL, headers=headers, json=payload, timeout=60)
             if response.status_code == 200:
                 return Image.open(io.BytesIO(response.content))
-        print(f"[HF] Error {response.status_code}: {response.text[:200]}")
-        return None
+        return f"ERROR_HF_{response.status_code}: {response.text[:200]}"
     except Exception as e:
-        print(f"[generate_image] Error: {e}")
-        return None
+        return f"ERROR_HF_EXCEPTION: {str(e)}"
 
 
 # ─── Edición de texto con Anthropic API ──────────────────────────────────────
@@ -153,5 +151,4 @@ def edit_text_with_claude(text: str, operation: str):
         )
         return message.content[0].text
     except Exception as e:
-        print(f"[edit_text_with_claude] Error: {e}")
-        return None
+        return f"ERROR_ANTHROPIC: {str(e)}"
