@@ -25,9 +25,12 @@ from groq import Groq
 def get_groq_key():
     try:
         import streamlit as st
-        return st.secrets.get("GROQ_API_KEY", os.getenv("GROQ_API_KEY", ""))
+        key = st.secrets.get("GROQ_API_KEY", "")
+        if key:
+            return key
     except Exception:
-        return os.getenv("GROQ_API_KEY", "")
+        pass
+    return os.getenv("GROQ_API_KEY", "")
 
 def get_hf_key():
     try:
@@ -56,7 +59,7 @@ DEFAULT_NEGATIVE_PROMPT = (
 )
 
 HF_IMAGE_MODEL = "stabilityai/stable-diffusion-xl-base-1.0"
-HF_API_URL = f"https://api-inference.huggingface.co/models/{HF_IMAGE_MODEL}"
+HF_API_URL = f"https://router.huggingface.co/hf-inference/models/{HF_IMAGE_MODEL}"
 
 
 # ─── Detección de modo ────────────────────────────────────────────────────────
