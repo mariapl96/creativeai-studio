@@ -4,7 +4,7 @@ ai_client.py
 Módulo de integración con APIs de IA generativa.
 
 Usa:
-  - Anthropic API directa (claude-haiku) para edición de texto
+  - Groq API (Llama 3.3 70B) para edición de texto
   - Hugging Face Inference API (SDXL) para generación de imágenes
 
 Ambas tienen capa gratuita. Configurar en .streamlit/secrets.toml o
@@ -136,7 +136,7 @@ OPERATION_PROMPTS = {
 
 
 def edit_text_with_claude(text: str, operation: str):
-    """Edita texto con Groq API (Llama 3). Devuelve string o None."""
+    """Edita texto con Groq API (Llama 3.3 70B). Devuelve string o None."""
     api_key = get_groq_key()
     if not api_key:
         return None
