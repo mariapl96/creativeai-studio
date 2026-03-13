@@ -16,18 +16,18 @@ Si no hay claves configuradas, la app usa modo demo automáticamente.
 import os
 import io
 import requests
-import anthropic
 from PIL import Image
+from groq import Groq
 
 
 # ─── Claves de API ────────────────────────────────────────────────────────────
 
-def get_anthropic_key():
+def get_groq_key():
     try:
         import streamlit as st
-        return st.secrets.get("ANTHROPIC_API_KEY", os.getenv("ANTHROPIC_API_KEY", ""))
+        return st.secrets.get("GROQ_API_KEY", os.getenv("GROQ_API_KEY", ""))
     except Exception:
-        return os.getenv("ANTHROPIC_API_KEY", "")
+        return os.getenv("GROQ_API_KEY", "")
 
 def get_hf_key():
     try:
@@ -56,14 +56,14 @@ DEFAULT_NEGATIVE_PROMPT = (
 )
 
 HF_IMAGE_MODEL = "runwayml/stable-diffusion-v1-5"
-HF_API_URL = f"https://api-inference.huggingface.co/models/{HF_IMAGE_MODEL}"
+HF_API_URL = f"https://router.huggingface.co/hf-inference/models/{HF_IMAGE_MODEL}"
 
 
 # ─── Detección de modo ────────────────────────────────────────────────────────
 
 def get_bedrock_client():
     """Devuelve True si hay alguna API key, None si no (activa modo demo)."""
-    if get_anthropic_key() or get_hf_key():
+    if get_groq_key() or get_hf_key():
         return True
     return None
 
@@ -133,8 +133,8 @@ OPERATION_PROMPTS = {
 
 
 def edit_text_with_claude(text: str, operation: str):
-    """Edita texto con Anthropic API. Devuelve string o None."""
-    api_key = get_anthropic_key()
+    """Edita texto con Groq API (Llama 3). Devuelve string o None."""
+    api_key = get_groq_key()
     if not api_key:
         return None
 
@@ -142,13 +142,15 @@ def edit_text_with_claude(text: str, operation: str):
     system_prompt = OPERATION_PROMPTS.get(op_key, OPERATION_PROMPTS["improve"])
 
     try:
-        client = anthropic.Anthropic(api_key=api_key)
-        message = client.messages.create(
-            model="claude-haiku-4-5",
+        client = Groq(api_key=api_key)
+        completion = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
             max_tokens=2000,
-            system=system_prompt,
-            messages=[{"role": "user", "content": text}]
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": text}
+            ]
         )
-        return message.content[0].text
+        return completion.choices[0].message.content
     except Exception as e:
-        return f"ERROR_ANTHROPIC: {str(e)}"
+        return f"ERROR_GROQ: {str(e)}"
