@@ -1,73 +1,77 @@
 # 🎨 CreativeAI Studio
 
-Aplicación de generación de imágenes y edición de contenido con IA generativa.
+Aplicación web de IA generativa para generación de imágenes y edición de contenido.
 Trabajo Final – Máster en IA – Asignatura: IA Generativa.
 
-## Tecnologías utilizadas
+## Demo en vivo
 
-- **Anthropic API** (Claude Haiku) – edición inteligente de texto
-- **Hugging Face Inference API** (Stable Diffusion XL) – generación de imágenes
-- **Streamlit** – interfaz web desplegada en la nube
+🔗 La app está desplegada en Streamlit Cloud. Accesible desde cualquier navegador sin instalar nada.
 
-## Instrucciones de despliegue
+## ¿Qué hace?
 
-### 1. Clonar el repositorio
-
-```bash
-git clone https://github.com/TU_USUARIO/creativeai-studio
-cd creativeai-studio
-```
-
-### 2. Instalar dependencias (local)
-
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Configurar claves de API
-
-Crea el fichero `.streamlit/secrets.toml` con tus claves:
-
-```toml
-ANTHROPIC_API_KEY = "sk-ant-..."
-HF_API_KEY = "hf_..."
-```
-
-> ⚠️ No subas este fichero a GitHub. Está incluido en .gitignore.
-
-### 4. Ejecutar en local
-
-```bash
-streamlit run app.py
-```
-
-### 5. Desplegar en Streamlit Cloud
-
-1. Sube el código a GitHub (sin el fichero secrets.toml)
-2. Ve a [share.streamlit.io](https://share.streamlit.io)
-3. New app → selecciona el repositorio → fichero: `app.py`
-4. En **Advanced settings → Secrets**, pega tu fichero secrets.toml con las claves
-5. Click Deploy
+| Módulo | Tecnología | Descripción |
+|---|---|---|
+| Generación de imágenes | Hugging Face – Stable Diffusion 2.1 | Genera imágenes a partir de texto con 8 estilos |
+| Edición de texto | Anthropic – Claude Haiku | Resume, expande, corrige, traduce con IA |
+| Galería | Estado de sesión | Visualiza y descarga imágenes generadas |
+| Historial de versiones | Estado de sesión | Versiones de texto con comparador |
+| Colaboración | Streamlit | Usuarios, roles, comentarios |
+| Seguridad | AWS (arquitectura prod.) | Moderación, cifrado, log de auditoría |
 
 ## Estructura del proyecto
 
 ```
 creativeai-studio/
 ├── app.py              # Aplicación principal (Streamlit)
-├── bedrock_client.py   # Integración con Anthropic API y Hugging Face
+├── ai_client.py        # Integración con Anthropic API y Hugging Face
 ├── demo_data.py        # Modo demo sin claves API
-├── requirements.txt    # Dependencias
+├── requirements.txt    # Dependencias Python
 └── README.md
 ```
 
-## Variables de entorno necesarias
+## Instalación local
 
-| Variable | Dónde conseguirla | Para qué |
+```bash
+# 1. Instalar dependencias
+pip install -r requirements.txt
+
+# 2. Crear fichero de claves
+mkdir .streamlit
+echo 'ANTHROPIC_API_KEY = "sk-ant-..."' > .streamlit/secrets.toml
+echo 'HF_API_KEY = "hf_..."' >> .streamlit/secrets.toml
+
+# 3. Ejecutar
+streamlit run app.py
+```
+
+## Despliegue en Streamlit Cloud
+
+1. Subir los 4 ficheros a GitHub (sin secrets.toml)
+2. Ir a share.streamlit.io → New app → seleccionar repo → app.py
+3. En Advanced settings → Secrets, pegar las claves:
+```toml
+ANTHROPIC_API_KEY = "sk-ant-..."
+HF_API_KEY = "hf_..."
+```
+4. Deploy → link público en 2-3 minutos
+
+## Claves de API necesarias
+
+| Variable | Dónde conseguirla | Coste |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | console.anthropic.com → API Keys | Edición de texto con Claude |
-| `HF_API_KEY` | huggingface.co → Settings → Tokens | Generación de imágenes con SDXL |
+| `ANTHROPIC_API_KEY` | console.anthropic.com → API Keys | Gratuito (créditos iniciales) |
+| `HF_API_KEY` | huggingface.co → Settings → Tokens (Read) | Gratuito |
 
 ## Modo demo
 
-Sin claves configuradas, la app funciona en modo demo automáticamente
-(imágenes de placeholder, respuestas de texto simuladas).
+Sin claves configuradas, la app funciona en modo demo automáticamente:
+imágenes de placeholder generadas con PIL y respuestas de texto simuladas.
+
+## Roles de usuario
+
+| Rol | Generar imágenes | Editar texto | Comentar |
+|---|---|---|---|
+| Diseñador | ✅ | ❌ | ✅ |
+| Redactor | ❌ | ✅ | ✅ |
+| Aprobador | ❌ | ❌ | ✅ |
+| Admin | ✅ | ✅ | ✅ |
